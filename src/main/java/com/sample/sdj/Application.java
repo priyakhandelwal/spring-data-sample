@@ -1,25 +1,37 @@
 package com.sample.sdj;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Application {
 
 	public static void main(String[] args) {
-		try(AnnotationConfigApplicationContext context 
-		= new AnnotationConfigApplicationContext(DataConfiguration.class)) {
-			
-			BookService service = context.getBean(BookService.class);
-			
-			Book book = new Book();
-			book.setTitle("The Dark Forest");
-			book.setPrice(new BigDecimal("500.00"));
-			book.setPublishDate(new Date());
-			
-			service.save(book);
-			System.out.println("**SAVED****");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("application-context.xml");
+		BookRepository bookRepository = context.getBean(BookRepository.class);
+		
+//		Optional<Book> result = bookRepository.findById(1L);
+//		if(result.isPresent()) {
+//			Book book = result.get();
+//			System.out.println(book.toString());
+//		} else {
+//			System.out.println("No book found");	
+//		}
+		
+//		List<Book> books = bookRepository.findAll();
+//		for(Book book: books) {
+//			System.out.println(book.toString());
+//		}
+		
+		List<Book> books = bookRepository.findAllById(new ArrayList<Long>() {{add(1L); add(4L);}});
+		
+		for(Book book : books) {
+			System.out.println(book.toString());
 		}
+		context.close();
 	}
+	
+	
 }
