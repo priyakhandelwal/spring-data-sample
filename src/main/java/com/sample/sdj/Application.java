@@ -25,6 +25,7 @@ public class Application {
 //			System.out.println(book.toString());
 //		}
 		
+		
 		List<Book> books = bookRepository.findAllById(new ArrayList<Long>() {{add(1L); add(4L);}});
 		
 		for(Book book : books) {
